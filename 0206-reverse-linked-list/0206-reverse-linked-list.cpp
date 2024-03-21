@@ -15,18 +15,16 @@ public:
         {
             return head;
         }
-        
-            ListNode*pre=NULL;
-            ListNode*curr=head;
-            ListNode*forward= NULL;
-            while(curr!=NULL)
-            {
-                forward=curr->next;
-                curr->next=pre;
-                pre=curr;
-                curr=forward;
-            }
-        
-        return pre;
+        ListNode*prev=NULL;
+        ListNode*curr=head;
+        while(curr!=NULL)
+        {
+            ListNode*forward=NULL;
+            forward=curr->next;
+            curr->next=prev;
+            prev=curr;
+            curr=forward;
+        }
+        return prev;
     }
 };
