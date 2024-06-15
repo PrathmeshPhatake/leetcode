@@ -1,36 +1,20 @@
+//TIME COMPLEXITY= O(n)
+//SPACE COMPLEXITY= O(3);
 class Solution {
 public:
     int numberOfSubstrings(string s) {
-        int n = s.size();
-        int Acount = 0;
-        int Bcount = 0;
-        int Ccount = 0;
-        int left = 0;
-        int count = 0;
         
-        for (int right = 0; right < n; right++) {
-            if (s[right] == 'a') {
-                Acount++;
-            } else if (s[right] == 'b') {
-                Bcount++;
-            } else if (s[right] == 'c') {
-                Ccount++;
-            }
-            
-            while (Acount >= 1 && Bcount >= 1 && Ccount >= 1) {
-                count += n - right;  // All substrings from left to right are valid
-                
-                if (s[left] == 'a') {
-                    Acount--;
-                } else if (s[left] == 'b') {
-                    Bcount--;
-                } else if (s[left] == 'c') {
-                    Ccount--;
-                }
-                left++;
+         vector<int> lastseen(3, -1);
+        int n=s.size();
+        int cnt=0;
+        for(int i=0;i<n;i++)
+        {
+            lastseen[s[i]-'a']=i;
+            if(lastseen[0]!=-1 && lastseen[1]!=-1 && lastseen[2]!=-1)
+            {
+                cnt=cnt+(1+ min(lastseen[0], min(lastseen[1], lastseen[2])));
             }
         }
-        
-        return count;
+        return cnt;
     }
 };
