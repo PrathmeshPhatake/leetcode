@@ -1,57 +1,46 @@
-//safe node: a node not in cycle  it s
-//return node not in cycle 
-//time complexity:O(V+E)
-//space compexity:0(V+E)
+// topo  return topo order with non cyclic element
+// time compexity :O(V+E+VlogV)
+//SPACE COMPLEXITY:O(V+E) FOR STORE THE REVERSE
 class Solution {
 public:
-  bool checkSafe(int node,vector<int>& visit,vector<int>& pathVisit,vector<vector<int>>& graph,vector<int>& checkNode)
-  {
-    visit[node]=1;
-    pathVisit[node]=1;
-    checkNode[node]=1;
-    for(auto it:graph[node])
-    {
-        if(!visit[it])
-        {
-            if(checkSafe(it,visit,pathVisit,graph,checkNode)==true)
-            {
-                checkNode[node]=0;
-                return true;
-            }
-        }
-        else if(pathVisit[it])
-        {
-            checkNode[node]=0;
-            return true;
-        }
-    }
-    checkNode[node]=1;
-    pathVisit[node]=0;
-    return false;
-  }
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
-        int V=graph.size();
-        vector<int>visit(V,0);
-        vector<int>pathVisit(V,0);
-        vector<int>checkNode(V,0);
-        vector<int>safeNode;
-        
-        //checknode 0=not  safe means in cycle  || 1= safest node 
+        int V = graph.size();
+        vector<vector<int>> reverseGraph(V);
+        vector<int> indegree(V, 0);
+        // O(V+E)
+        //  Create reverse graph and calculate reverse  indegrees
+        for (int i = 0; i < V; i++) {
+            for (auto it : graph[i]) {
+                reverseGraph[it].push_back(i);
+                indegree[i]++;
+            }
+        }
 
-        for(int i=0;i<V;i++)
-        {
-            if(visit[i]==0)
-            {
-                checkSafe(i,visit,pathVisit,graph,checkNode);
+        // Queue for processing nodes with 0 indegree
+        //O(V)
+        queue<int> q;
+        for (int i = 0; i < V; i++) {
+            if (indegree[i] == 0) {
+                q.push(i);
             }
         }
-        for(int i=0;i<V;i++)
-        {
-            if(checkNode[i]==1)
-            {
-                safeNode.push_back(i);
+        //O(V+E)
+        vector<int> safeNodes;
+        while (!q.empty()) {
+            int node = q.front();
+            q.pop();
+            safeNodes.push_back(node);
+            for (auto neighbor : reverseGraph[node]) {
+                indegree[neighbor]--;
+                if (indegree[neighbor] == 0) {
+                    q.push(neighbor);
+                }
             }
         }
-        return safeNode;
+
+       //O(V*LOG(V))
+        // Sort safe nodes to return in required order
+        sort(safeNodes.begin(), safeNodes.end());
+        return safeNodes;
     }
 };
