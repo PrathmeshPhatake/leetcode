@@ -1,53 +1,48 @@
-// Definition for singly-linked list.
-// struct ListNode {
-//     int val;
-//     ListNode *next;
-//     ListNode() : val(0), next(nullptr) {}
-//     ListNode(int x) : val(x), next(nullptr) {}
-//     ListNode(int x, ListNode *next) : val(x), next(next) {}
-// };
-
-// Custom comparator for ListNode*
-struct CompareListNode {
-    bool operator()(ListNode* const& lhs, ListNode* const& rhs) {
-        return lhs->val > rhs->val; // Min-heap: smallest element has highest priority
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+ struct comparator{
+    bool operator()(ListNode* const& lhs,ListNode* const& rhs){
+        return lhs->val > rhs->val;
     }
-};
-
+ };
 class Solution {
+
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        // Priority queue with custom comparator
-        priority_queue<ListNode*, vector<ListNode*>, CompareListNode> pq;
-        
-        // Push the head of each list into the priority queue
-        for (auto list : lists) {
-            if (list != nullptr) {
-                pq.push(list);
+        priority_queue<ListNode*,vector<ListNode*>,comparator>pq;
+        //PUSH HEAD OF SUBLIST OF LIMKEDLIST 
+        for(auto it:lists)
+        {
+            if(it!=nullptr)
+           {
+             pq.push(it);
             }
         }
-
-        // Dummy node to start the merged list
+        //using that head get push new value in queue
+        //for addrese of first node
         ListNode dummy;
-        ListNode* tail = &dummy;
-
-        // While there are elements in the priority queue
-        while (!pq.empty()) {
-            // Get the smallest element
-            ListNode* node = pq.top();
+        ListNode* tail= &dummy;
+        while(!pq.empty())
+        {
+            ListNode* node=pq.top();
             pq.pop();
-            
-            // Add it to the merged list
-            tail->next = node;
-            tail = node;
 
-            // Push the next element from the same list into the priority queue
-            if (node->next != nullptr) {
+            //linked node
+            tail->next=node;
+            tail=node;
+            if(node->next != nullptr)
+            {
                 pq.push(node->next);
             }
         }
-
-        // Return the merged list
-        return dummy.next;
+       return dummy.next;
     }
 };
