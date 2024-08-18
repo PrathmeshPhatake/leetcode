@@ -1,33 +1,18 @@
 class Solution {
 public:
     int nthUglyNumber(int n) {
-        // priority queue
-        priority_queue<long,vector<long>,greater<long>>pq;
-        unordered_set<long>set;
-        pq.push(1);
-        set.insert(1);
-        long num=1;
-        for(int i=0;i<n;i++)
+        
+        vector<int>V;
+        V.push_back(1); 
+        int i=0,j=0,k=0;
+        for(int a=0;a<n;a++)
         {
-             num=pq.top();
-            pq.pop();
-            if(set.find(num*2)==set.end())
-            {
-                pq.push(num*2);
-                set.insert(num*2);
-            }
-            if(set.find(num*3)==set.end())
-            {
-                pq.push(num*3);
-                set.insert(num*3);
-            }
-            if(set.find(num*5)==set.end())
-            {
-                pq.push(num*5);
-                set.insert(num*5);
-            }
-            
+           V.push_back(min({V[i]*2,V[j]*3,V[k]*5}));
+           int mini=V.back();
+           if(mini==V[i]*2) i++;
+           if(mini==V[j]*3) j++;
+           if(mini==V[k]*5) k++;
         }
-        return num;
+        return V[n-1];
     }
 };
