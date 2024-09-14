@@ -1,33 +1,35 @@
 class Solution {
 public:
-int func(vector<vector<int>>& triangle,vector<vector<int>>& dp,int row,int col)
-{
-    int m= triangle.size();
-    int n=triangle[0].size();
-    // base case 
-    if(row==m-1)
-    {
-        return triangle[row][col];
-    }
-    // check this is already persent or not 
-    if(dp[row][col]!=-1) return dp[row][col];
-    int temp=INT_MAX;
-    // going next row with col and col+1
-    for(int i=col;i<=col+1 ;i++)
-    {
-        temp=min(temp,triangle[row][col]+func(triangle,dp,row+1,i));
-    }
-    return dp[row][col]=temp;
-}
     int minimumTotal(vector<vector<int>>& triangle) {
-        vector<vector<int>>dp;
+         vector<vector<int>>dp;
         // we want this type of dp array 
         for(auto it:triangle)
         {
-            dp.push_back(vector<int>(it.size(),-1));
+            dp.push_back(vector<int>(it.size(),INT_MAX));
         }
-        return func(triangle,dp,0,0);
-
-
+        // base case 
+        dp[0][0]=triangle[0][0];
+        int m=triangle.size();
+        for(int i=1;i<m;i++)
+        {
+            int n=triangle[i].size();
+            for(int j=0;j<n;j++)
+            {
+                if(j<triangle[i-1].size())
+                {
+                    dp[i][j]=min(dp[i][j],dp[i-1][j]+triangle[i][j]);
+                }
+                if( j-1>=0)
+                {
+                    dp[i][j]=min(dp[i][j],dp[i-1][j-1]+triangle[i][j]);
+                }
+            }
+        }
+        int temp=INT_MAX;
+        for(int i=0;i<triangle[m-1].size();i++)
+        {
+            temp=min(temp,dp[m-1][i]);
+        }
+        return temp;
     }
 };
