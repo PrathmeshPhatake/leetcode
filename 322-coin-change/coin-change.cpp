@@ -1,19 +1,28 @@
 class Solution {
 public:
-    int help(vector<int>& coins, int amount, int n,vector<vector<int>>&h)
+int memoization(vector<vector<int>>&dp,vector<int>&coins,int index,int amount)
+{
+    if(amount==0) return 0;
+    if(index<0 || amount<0) return INT_MAX-1;
+    if(dp[index][amount]!=-1) return dp[index][amount];
+    int res=INT_MAX;
+    if(coins[index]>amount) 
     {
-        if(amount == 0) return 0;
-        if(n < 0 || amount < 0) return INT_MAX-1;
-        if(h[n][amount]!= -1) return h[n][amount];
-        int one = help(coins,amount,n-1,h);
-        int two = 1+help(coins,amount-coins[n],n,h);
-        h[n][amount] = min(one,two);
-        return h[n][amount];
+        int Non_taken=0+memoization(dp,coins,index-1,amount);
+        res=Non_taken;
     }
+    else
+    {
+        int Non_taken=0+memoization(dp,coins,index-1,amount);
+        int taken=1+memoization(dp,coins,index,amount-coins[index]);
+        res=min(Non_taken,taken);
+    }
+    return dp[index][amount]=res;
     
+}
     int coinChange(vector<int>& coins, int amount) {
-        vector<vector<int>>h(coins.size(),vector<int>(amount+1,-1));
-        int ans = help(coins,amount,coins.size()-1,h);
-        return (ans < INT_MAX-1)?ans:-1;
+        vector<vector<int>>dp(coins.size(),vector<int>(amount+1,-1));
+        int res=memoization(dp,coins,coins.size()-1,amount);
+        return res==INT_MAX-1? -1:res;
     }
 };
