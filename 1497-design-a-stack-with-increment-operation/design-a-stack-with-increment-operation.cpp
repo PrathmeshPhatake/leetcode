@@ -1,51 +1,34 @@
 class CustomStack {
 public:
-stack<int>st1;
-stack<int>st2;
+int ans[1000];
 int size=0;
+int index=-1;
     CustomStack(int maxSize) {
         size=maxSize;
     }
     
     void push(int x) {
-        if(st1.size()<size)
+        if(index<size-1)
         {
-            st1.push(x);
+            ans[++index]=x;
         }
-        
     }
     
     int pop() {
-        if(!st1.empty())
+        int num=-1;
+        if(index>=0)
         {
-            int num=st1.top();
-            st1.pop();
-           return num;
+             num=ans[index];
+             ans[index--]=0;
+            return num;
         }
-        return -1;
-        
+        return  num;
     }
     
     void increment(int k, int val) {
-        while(!st1.empty())
+        for(int i=0;i<size && i<k;i++)
         {
-            st2.push(st1.top());
-            st1.pop();
-        }
-        while(!st2.empty())
-        {
-            int num=st2.top();
-            st2.pop();
-            if(k>0)
-            {
-                num=num+val;
-                st1.push(num);
-                k--;
-            }
-            else
-            {
-                st1.push(num);
-            }
+            ans[i]+=val;
         }
     }
 };
