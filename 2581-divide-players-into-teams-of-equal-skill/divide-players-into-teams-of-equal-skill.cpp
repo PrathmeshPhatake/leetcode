@@ -15,7 +15,7 @@ public:
         int sum=skill[0]+skill[n-1];
         while(i<j)
         {
-            if(sum==(skill[i]+skill[j]))
+            if(sum%(skill[i]+skill[j])==0)
             {
                product+=skill[i]*skill[j];
                
