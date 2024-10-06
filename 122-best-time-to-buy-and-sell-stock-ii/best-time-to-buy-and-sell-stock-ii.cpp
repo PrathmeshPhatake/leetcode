@@ -1,29 +1,34 @@
 class Solution {
 public:
+int counting(vector<vector<int>>&dp,vector<int>prices,int index,int buy)
+{
+    int n=prices.size();
+    int sum=0;
+    if(index>=n)
+    {
+        return 0;
+    }
+    if(buy)
+    {
+        sum=max(-prices[index]+counting(dp,prices,index+1,0),0+counting(dp,prices,index+1,1));
+    }
+    else
+    {
+       sum=max(prices[index]+counting(dp,prices,index+1,1),0+counting(dp,prices,index+1,0));   
+    }
+    return sum;
+}
     int maxProfit(vector<int>& prices) {
-        int n = prices.size();
-        if (n == 0) return 0;  // Edge case for empty input
+        int n=prices.size();
         
-        int aheadBuy = 0, aheadSell = 0;  // For storing future states
-
-       
-        for (int index = n - 1; index >= 0; --index) {
-            // If you are in a "buy" state, you have two choices:
-            // 1. Buy the stock and move to the "sell" state.
-            // 2. Skip buying and stay in the "buy" state.
-            int currBuy = max(-prices[index] + aheadSell, aheadBuy);
-
-            // If you are in a "sell" state, you have two choices:
-            // 1. Sell the stock and move to the "buy" state.
-            // 2. Skip selling and stay in the "sell" state.
-            int currSell = max(prices[index] + aheadBuy, aheadSell);
-            
-            // Update the state for the next iteration
-            aheadBuy = currBuy;
-            aheadSell = currSell;
-        }
-
-        // The answer will be in the "buy" state for the first day (index 0).
-        return aheadBuy;
+        vector<vector<int>>dp(n+1,vector<int>(2,-1));
+       dp[0][0]=0;
+       dp[0][1]=-prices[0];
+       for(int i=1;i<n;i++)
+       {
+          dp[i][0]=max(dp[i-1][0],dp[i-1][1]+prices[i]);
+          dp[i][1]=max(dp[i-1][1],dp[i-1][0]-prices[i]);
+       }
+       return dp[n-1][0];
     }
 };
