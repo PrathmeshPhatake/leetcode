@@ -1,35 +1,19 @@
 class Solution {
 public:
     int minimumTotal(vector<vector<int>>& triangle) {
-         vector<vector<int>>dp;
-        // we want this type of dp array 
-        for(auto it:triangle)
+        int n=triangle.size()-1;
+        vector<vector<int>>dp(triangle.size(),vector<int>(triangle.size(),0));
+        for(int i=0;i<=n;i++)
         {
-            dp.push_back(vector<int>(it.size(),INT_MAX));
+            dp[n][i]=triangle[n][i];
         }
-        // base case 
-        dp[0][0]=triangle[0][0];
-        int m=triangle.size();
-        for(int i=1;i<m;i++)
+        for(int i=n-1;i>=0;i--)
         {
-            int n=triangle[i].size();
-            for(int j=0;j<n;j++)
+            for(int j=0;j<=i;j++)
             {
-                if(j<triangle[i-1].size())
-                {
-                    dp[i][j]=min(dp[i][j],dp[i-1][j]+triangle[i][j]);
-                }
-                if( j-1>=0)
-                {
-                    dp[i][j]=min(dp[i][j],dp[i-1][j-1]+triangle[i][j]);
-                }
+                dp[i][j]=triangle[i][j]+min(dp[i+1][j],dp[i+1][j+1]);
             }
         }
-        int temp=INT_MAX;
-        for(int i=0;i<triangle[m-1].size();i++)
-        {
-            temp=min(temp,dp[m-1][i]);
-        }
-        return temp;
+        return dp[0][0];
     }
 };
