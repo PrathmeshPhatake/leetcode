@@ -1,20 +1,32 @@
 class Solution {
 public:
-    int cap(vector<vector<char>>& b, int x, int y, int dx, int dy) {
-        while (x >= 0 && x < b.size() && y >= 0 && y < b[x].size() &&
-               b[x][y] != 'B') {
-            if (b[x][y] == 'p')
-                return 1;
-            x += dx, y += dy;
+    int count=0;
+    void solve(vector<vector<char>> &board,int sr,int sc,char ch){
+        if(sr>=board.size() || sc>= board[0].size() || sr<0 || sc<0 || board[sr][sc]=='B')    
+            return;
+        if(board[sr][sc]=='p'){
+            count++;
+            return;
         }
-        return 0;
+        if(board[sr][sc]=='.'){
+            if(ch=='u') solve(board,sr-1,sc,'u');
+            if(ch=='d') solve(board,sr+1,sc,'d');
+            if(ch=='l') solve(board,sr,sc-1,'l');
+            if(ch=='r') solve(board,sr,sc+1,'r');
+        }
+        
     }
-    int numRookCaptures(vector<vector<char>>& b) {
-        for (auto i = 0; i < b.size(); ++i)
-            for (auto j = 0; j < b[i].size(); ++j)
-                if (b[i][j] == 'R')
-                    return cap(b, i, j, 0, 1) + cap(b, i, j, 0, -1) +
-                           cap(b, i, j, 1, 0) + cap(b, i, j, -1, 0);
-        return 0;
+    int numRookCaptures(vector<vector<char>>& board) {
+        for(int i=0;i<board.size();i++)
+            for(int j=0;j<board[i].size();j++){
+                if(board[i][j]=='R'){ 
+                    solve(board,i-1,j,'u');
+                    solve(board,i+1,j,'d');
+                    solve(board,i,j-1,'l');
+                    solve(board,i,j+1,'r');
+                    break;
+                }
+            }
+        return count;
     }
 };
