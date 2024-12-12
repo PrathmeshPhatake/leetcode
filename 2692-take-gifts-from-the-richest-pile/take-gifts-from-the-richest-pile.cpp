@@ -1,24 +1,25 @@
 class Solution {
 public:
     long long pickGifts(vector<int>& gifts, int k) {
+        // max heap
         long long sum=0;
-        int n=gifts.size();
-        for(int i=0;i<k;i++)
+        priority_queue<int>pq;
+        for(auto it:gifts)
         {
-            int index=-1;
-            int maxi=INT_MIN;
-            for(int j=0;j<n;j++)
-            {
-                if(maxi<gifts[j])
-                {
-                    index=j;
-                    maxi=gifts[j];
-                }
-            }
-            gifts[index]=sqrt(maxi);
+            pq.push(it);
         }
-       
-        for(auto it:gifts)sum+=it;
+        while(k--)
+        {
+            int value=pq.top();
+            pq.pop();
+            pq.push(sqrt(value));
+        }
+        while(!pq.empty())
+        {
+            int value=pq.top();
+            pq.pop();
+            sum+=value;
+        }
         return sum;
     }
 };
