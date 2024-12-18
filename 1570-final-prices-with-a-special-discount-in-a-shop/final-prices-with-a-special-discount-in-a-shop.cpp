@@ -1,22 +1,13 @@
 class Solution {
 public:
     vector<int> finalPrices(vector<int>& prices) {
-        int n=prices.size();
-        for(int i=0;i<n;i++)
-        {
-            int j=i+1;
-            while(j<n)
-            {
-                if(prices[j]<=prices[i])
-                {
-                    break;
-                }
-                j++;
+        for (int i = 0; i < prices.size(); i++) {
+            int x = i + 1;
+            while (x < prices.size() && prices[x] > prices[i]) {
+                x++;
             }
-            if(j<n)
-            {
-                prices[i]=prices[i]-prices[j];
-            }
+            if (x < prices.size())
+                prices[i] -= prices[x];
         }
         return prices;
     }
