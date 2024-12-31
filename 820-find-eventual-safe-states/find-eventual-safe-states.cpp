@@ -1,33 +1,33 @@
 class Solution {
 public:
-    bool dfs(int node, vector<vector<int>>& graph, vector<int>& state) {
-        if (state[node] != 0) {
-            return state[node] == 2; 
-        }
-
-        state[node] = 1;
-
-        for (int neighbor : graph[node]) {
-            if (!dfs(neighbor, graph, state)) {
-                return false; 
-            }
-        }
-
-        state[node] = 2;
-        return true;
+bool dfs(vector<vector<int>>&graph,vector<int>&visited,int node)
+{
+    if(visited[node]!=0)
+    {
+        return visited[node]==2;
     }
-
+    visited[node]=1;
+    for(auto neigh:graph[node])
+    {
+        if(!dfs(graph,visited,neigh))
+        {
+            return false;
+        }
+    }
+    visited[node]=2;
+    return true;
+}
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
-        int n = graph.size();
-        vector<int> state(n, 0);
-        vector<int> result;
-
-        for (int i = 0; i < n; i++) {
-            if (dfs(i, graph, state)) {
+        int V=graph.size();
+        vector<int>visited(V,0);  // 0=for unvisit,1=visit 2=safe we want safe node
+        vector<int>result;
+        for(int i=0;i<V;i++)
+        {
+            if(dfs(graph,visited,i))
+            {
                 result.push_back(i);
             }
         }
-
         return result;
     }
 };
