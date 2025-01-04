@@ -1,20 +1,16 @@
-// used dfs for it 
-// one to other other to other
-// number of path in graph
 class Solution {
 public:
- void dfs(vector<vector<int>>&stones ,int i,vector<int>&visited)
- {
-    int n=stones.size();
+void dfs(vector<int>&visited,int i,vector<vector<int>>& stones)
+{
+    int n=visited.size();
     visited[i]=1;
-    for(int j=0;j<n;j++)
-    {
-        if(!visited[j] && (stones[i][0]==stones[j][0] || stones[j][1]==stones[i][1]))
+    for(int j=0;j<n;j++){
+        if(!visited[j] && (stones[i][0]==stones[j][0]||stones[i][1]==stones[j][1]))
         {
-            dfs(stones,j,visited);
+            dfs(visited,j,stones);
         }
     }
- }
+}
     int removeStones(vector<vector<int>>& stones) {
         int n=stones.size();
         vector<int>visited(n,0);
@@ -23,7 +19,7 @@ public:
         {
             if(!visited[i])
             {
-                dfs(stones,i,visited);
+                dfs(visited,i,stones);
                 count++;
             }
         }
