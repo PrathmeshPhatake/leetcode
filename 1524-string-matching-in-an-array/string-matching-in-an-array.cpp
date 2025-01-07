@@ -1,15 +1,15 @@
 class Solution {
 public:
     vector<string> stringMatching(vector<string>& words) {
-        vector<string>ans;
         int n=words.size();
-        for(int i=0;i<n;i++){
-            string str=words[i];
-            for(auto it:words)
+        vector<string>ans;
+        for(auto it:words)
+        {
+            for(auto str:words)
             {
-                if(it.find(str)!=string::npos && str!=it)
+                if(str.find(it)!=string::npos && it!=str)
                 {
-                    ans.push_back(str);
+                    ans.push_back(it);
                     break;
                 }
             }
