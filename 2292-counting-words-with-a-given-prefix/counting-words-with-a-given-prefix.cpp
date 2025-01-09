@@ -7,7 +7,9 @@ public:
         {
             string str=words[i];
             if(str.substr(0,pref.size())==pref)
-            count++;
+            { 
+                count++;
+            }
         }
         return count;
     }
