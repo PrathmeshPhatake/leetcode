@@ -1,12 +1,12 @@
 class Solution {
 public:
     vector<string> wordSubsets(vector<string>& words1, vector<string>& words2) {
-        vector<string>ans;
         vector<int>maxfreq(26,0);
-        for(auto it:words2)
+        vector<string>ans;
+        for(auto word:words2)
         {
             vector<int>freq(26,0);
-            for(auto ch:it)
+            for(auto ch:word)
             {
                 freq[ch-'a']++;
             }
@@ -17,12 +17,12 @@ public:
         }
         for(auto word:words1)
         {
-            bool flag=true;
             vector<int>freq(26,0);
-             for(auto ch:word)
-             {
+            for(auto ch:word)
+            {
                 freq[ch-'a']++;
-             }
+            }
+            int flag=true;
             for(int i=0;i<26;i++)
             {
                 if(maxfreq[i]>freq[i])
@@ -31,7 +31,7 @@ public:
                     break;
                 }
             }
-             if(flag)ans.push_back(word);
+            if(flag) ans.push_back(word);
         }
         return ans;
     }
