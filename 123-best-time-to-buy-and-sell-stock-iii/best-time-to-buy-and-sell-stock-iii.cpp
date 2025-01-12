@@ -1,31 +1,26 @@
 class Solution {
 public:
-int counting(vector<vector<vector<int>>>&dp,vector<int>&prices,int index,int buy,int count)
+int func(vector<int>&prices,int i,int buy,int k,vector<vector<vector<int>>>&dp)
 {
     int n=prices.size();
-    if(index>=n ||count>=2)
+    if(i>=n || k>=2)
     {
         return 0;
     }
-    int sum=0;
-    if(dp[index][buy][count]!=-1) return dp[index][buy][count];
+    if(dp[i][buy][k]!=-1)return dp[i][buy][k];
     if(buy)
     {
-        
-            sum=max(0+counting(dp,prices,index+1,1,count) // skip buy
-            ,-prices[index]+counting(dp,prices,index+1,0,count));   // buy this 
+        dp[i][buy][k]=max(-prices[i]+func(prices,i+1,0,k,dp),func(prices,i+1,1,k,dp));
     }
     else
     {
-        sum=max(prices[index]+counting(dp,prices,index+1,1,count+1) // sell this product
-        ,0+counting(dp,prices,index+1,0,count)); // skipp this sale 
+        dp[i][buy][k]=max(prices[i]+func(prices,i+1,1,k+1,dp),func(prices,i+1,0,k,dp));
     }
-    return dp[index][buy][count]=sum;
+    return dp[i][buy][k];
 }
     int maxProfit(vector<int>& prices) {
         int n=prices.size();
-        vector<vector<vector<int>>>dp(n+1,vector<vector<int>>(2,vector<int>(3,-1)));
-        return counting(dp,prices,0,1,0);
-
+        vector<vector<vector<int>>>dp(n,vector<vector<int>>(2,vector<int>(2,-1)));
+        return func(prices,0,1,0,dp);
     }
 };
