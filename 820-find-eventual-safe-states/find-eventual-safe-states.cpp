@@ -1,33 +1,38 @@
 class Solution {
 public:
-bool dfs(vector<vector<int>>&graph,vector<int>&visited,int node)
-{
-    if(visited[node]!=0)
-    {
-        return visited[node]==2;
-    }
-    visited[node]=1;
-    for(auto neigh:graph[node])
-    {
-        if(!dfs(graph,visited,neigh))
-        {
-            return false;
-        }
-    }
-    visited[node]=2;
-    return true;
-}
-    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
-        int V=graph.size();
-        vector<int>visited(V,0);  // 0=for unvisit,1=visit 2=safe we want safe node
-        vector<int>result;
-        for(int i=0;i<V;i++)
-        {
-            if(dfs(graph,visited,i))
-            {
-                result.push_back(i);
+    int n;
+    vector<int> degreein;
+    vector< vector<int> > rGraph;
+    vector<int> ans;
+    
+    void init(vector<vector<int>>& G){
+        n = G.size();
+        degreein = vector<int>(n,0);
+        rGraph.resize(n, vector<int>(0) );
+        
+        for (int u=0; u<n; u++){
+            for (int v:G[u]){
+                rGraph[v].push_back(u);
+                degreein[u]++;
             }
         }
-        return result;
+    }
+    
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        init(graph);
+        queue<int> que;
+        for (int i=0; i<n; i++){
+            if (degreein[i]==0) que.push(i);
+        }
+        while (que.size()){
+            int u = que.front(); que.pop();
+            ans.push_back(u);
+            for (int v:rGraph[u]){
+                degreein[v]--;
+                if (degreein[v]==0) que.push(v);
+            }
+        }
+        sort(ans.begin(),ans.end());
+        return ans;
     }
 };
