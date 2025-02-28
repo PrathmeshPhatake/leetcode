@@ -11,23 +11,31 @@
  */
 class Solution {
 public:
-void func(TreeNode*root,int v,int l,map<int,int>&mp)
-{
-    if(root==NULL) return;
-    if(mp.find(l)==mp.end()  )
-    {
-        mp[l]={root->val};
-    }
-    func(root->right,v+1,l+1,mp);
-    func(root->left,v-1,l+1,mp);
-}
     vector<int> rightSideView(TreeNode* root) {
-        map<int,int>mp;
+        // start moving from left to right and getting right lement at last 
+        queue<TreeNode*>q;
         vector<int>ans;
-        func(root,0,0,mp);
-        for(auto it:mp)
+        q.push(root);
+        if(root==NULL) return {};
+        while(!q.empty())
         {
-            ans.push_back(it.second);
+            int rightmost=0;
+            int size=q.size();
+            for(int i=0;i<size;i++)
+            {
+                TreeNode*node=q.front();
+                q.pop();
+                rightmost=node->val;
+                if(node->left)
+                {
+                    q.push(node->left);
+                }
+                if(node->right){
+                    q.push(node->right);
+                }
+            }
+            ans.push_back(rightmost);
+
         }
         return ans;
     }
