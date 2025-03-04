@@ -1,19 +1,22 @@
-// we memoized the steps
-//  when we at 3 then we jump on 4,5 that
-// if we now at 3  we know counting of to reach 5 then we not need to check  at 4 adn 5 
 class Solution {
-    int climb(int n,int stairs,vector<int>&dp)
-    {
-        if(stairs>n)return 0;
-        if(stairs==n)return 1;
-        if(dp[stairs]!=-1)return dp[stairs];
-        return dp[stairs]=climb(n,stairs+1,dp)+climb(n,stairs+2,dp);
-        return dp[stairs];
-    }
 public:
+int func(vector<int>&dp,int n)
+{
+    if(n<=0)
+    {
+        if( n==0)
+        return 1;
+        else
+        {
+            return 0;
+        }
+    }
+    if(dp[n]!=-1)return dp[n];
+    return dp[n]=func(dp,n-1) + func(dp,n-2);
+}
     int climbStairs(int n) {
-        vector<int>dp(n,-1);
-        return climb(n,0,dp);
-        
+        if(n==0) return 0;
+        vector<int>dp(n+1,-1);
+        return func(dp,n);
     }
 };
