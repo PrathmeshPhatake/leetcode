@@ -11,26 +11,36 @@ public:
         int left = 0;
         unordered_map<char, int> vowel_map;
 
-        for (int right = 0; right < n; right++) {
-            if (isVowel(word[right])) {
+        for(int right=0;right<n;right++)
+        {
+            if(isVowel(word[right]))
+            {
                 vowel_map[word[right]]++;
-            } else {
+            }
+            else
+            {
                 consonants++;
             }
 
-            while (vowel_map.size() == 5 && consonants >= k) {
-                ans += n - right;
-                if (isVowel(word[left])) {
+            while(vowel_map.size()==5 && consonants>=k)
+            {
+                ans+=n-right;
+                if(isVowel(word[left]))
+                {
                     vowel_map[word[left]]--;
-                    if (vowel_map[word[left]] == 0) {
+                    if(vowel_map[word[left]]==0)
+                    {
                         vowel_map.erase(word[left]);
                     }
-                } else {
+                }
+                else
+                {
                     consonants--;
                 }
                 left++;
             }
         }
+
         return ans;
     }
 
