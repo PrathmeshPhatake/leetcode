@@ -36,6 +36,7 @@ public:
             int root = find(i);
             componentVertices[root].insert(i);
         }
+        
         for (auto& edge : edges) {
             int root = find(edge[0]);
             componentEdges[root]++;
@@ -49,6 +50,7 @@ public:
                 completeCount++;
             }
         }
+        
         return completeCount;
     }
 };
