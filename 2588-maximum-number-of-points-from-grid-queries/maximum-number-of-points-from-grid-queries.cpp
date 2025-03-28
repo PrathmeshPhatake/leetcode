@@ -7,22 +7,18 @@ public:
 
         vector<pair<int, int>> sortedQueries;
         for (int i = 0; i < queries.size(); i++) 
-            sortedQueries.push_back({queries[i], i});
-        
+        sortedQueries.push_back({queries[i], i});
         sort(sortedQueries.begin(), sortedQueries.end());  // Sort queries in ascending order
-
         priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<>> pq;
         pq.push({grid[0][0], {0, 0}});
         visited[0][0] = true;
-
         int total = 0, idx = 0;
         int rowDir[] = {-1, 0, 1, 0};
         int colDir[] = {0, 1, 0, -1};
-
         while (idx < sortedQueries.size()) {
             int queryValue = sortedQueries[idx].first;
             int queryIndex = sortedQueries[idx].second;
-
+              
             while (!pq.empty() && pq.top().first < queryValue) {
                 auto [val, cell] = pq.top();
                 pq.pop();
