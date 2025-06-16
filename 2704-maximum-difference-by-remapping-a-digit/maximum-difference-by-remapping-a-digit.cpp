@@ -1,29 +1,42 @@
 class Solution {
 public:
     int minMaxDifference(int num) {
-        string str = to_string(num);
-        string ma = "";
-        string mi = "";
-        int n = str.size();
-        char ele = ' ';
-        // Step 1: Find first non-9 digit for max replacement
-        for(int i=0;i<n;i++){
-            if(str[i] != '9'){
-                ele = str[i];
+        string nums=to_string(num);
+        string mi="";
+        string ma="";
+        char ele=' ';
+        int n=nums.size();
+        // find max element except 9 
+        for(int i=0;i<n;i++)
+        {
+            if(nums[i]!='9')
+            {
+                ele=nums[i];
                 break;
             }
         }
-        // Step 2: Replace that digit with 9 for max
-        for(int i=0;i<n;i++){
-            if(ele == str[i]) ma += '9';
-            else ma += str[i];
+        for(int i=0;i<n;i++)
+        {
+            if(nums[i]==ele)
+            {
+                ma+='9';
+
+            }else
+            {
+                ma+=nums[i];
+            }
         }
-        // Step 3: Replace first digit for min with 0
-        for(int i=0;i<n;i++){
-            if(str[0] == str[i]) mi += '0';
-            else mi += str[i];
+        for(int i=0;i<n;i++)
+        {
+            if(nums[i]==nums[0])
+            {
+                mi+='0';
+            }
+            else
+            {
+                mi+=nums[i];
+            }
         }
-        // Step 4: Convert and calculate result
-        return stoi(ma) - stoi(mi);
+        return stoi(ma)-stoi(mi);
     }
 };
