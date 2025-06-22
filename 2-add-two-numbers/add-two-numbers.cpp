@@ -11,51 +11,50 @@
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        if(l1==NULL && l2==NULL)
+        ListNode*ptra=l1;
+        ListNode*ptrb=l2;
+        ListNode*reshead=new ListNode(-1);
+        ListNode*restail=reshead;
+        int digit=0;
+        while(ptra!=NULL && ptrb!=NULL)
         {
-            return NULL;
-        }
-        
-        ListNode*temp1=l1;
-        ListNode*temp2=l2;
-        ListNode*head1=new ListNode(1);
-        ListNode*head=head1;
-        int carry=0;
-        while(temp1!=NULL && temp2!=NULL)
-        {
-            int sum=temp1->val+temp2->val+carry;
-            carry=sum/10;
-            ListNode*insert=new ListNode(sum%10);
-            head->next=insert;
-            head=insert;
-            temp1=temp1->next;
-            temp2=temp2->next;
-        }
-        while(temp1!=NULL )
-        {
-            int sum=temp1->val+carry;
-            carry=sum/10;
-             ListNode*insert=new ListNode(sum%10);
-            head->next=insert;
-            head=insert;
-            temp1=temp1->next;
+            int value=(ptra->val+ptrb->val)+digit;
+            int unit=value%10;
+            digit=value/10;
+            ListNode*newnode=new ListNode(unit);
+            restail->next=newnode;
+            restail=newnode;
+            ptra=ptra->next;
+            ptrb=ptrb->next;
             
         }
-        while( temp2!=NULL)
+        while(ptra!=NULL )
         {
-            int sum=temp2->val+carry;
-            carry=sum/10;
-            ListNode*insert=new ListNode(sum%10);
-            head->next=insert;
-            head=insert;
+            int value=(ptra->val)+digit;
+            int unit=value%10;
+            digit=value/10;
+            ListNode*newnode=new ListNode(unit);
+            restail->next=newnode;
+            restail=newnode;
+            ptra=ptra->next;            
+        }
+        while(ptrb!=NULL)
+        {
+            int value=(ptrb->val)+digit;
+            int unit=value%10;
+            digit=value/10;
+            ListNode*newnode=new ListNode(unit);
+            restail->next=newnode;
+            restail=newnode;
+            ptrb=ptrb->next;
             
-            temp2=temp2->next;
         }
-        if(carry>0)
+        if(digit>0)
         {
-            ListNode*insert=new ListNode(carry);
-            head->next=insert;
+            ListNode*newnode=new ListNode(digit);
+            restail->next=newnode;
+            restail=newnode;
         }
-        return head1->next;
+        return reshead->next;
     }
 };
