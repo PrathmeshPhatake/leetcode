@@ -1,29 +1,21 @@
 class Solution {
 public:
+    static constexpr long long MOD = 1e9 + 7;
+
+    long long modPow(long long base, long long exp) {
+        long long res = 1;
+        base %= MOD;
+        while (exp) {
+            if (exp & 1) res = (res * base) % MOD;
+            base = (base * base) % MOD;
+            exp >>= 1;
+        }
+        return res;
+    }
+
     int countGoodNumbers(long long n) {
-        int mod = 1e9 + 7;
-        
-        // Calculate the number of even and odd positions
-        long long even = (n + 1) / 2;
-        long long odd = n / 2;
-
-        // Helper function to calculate (base^exp) % mod
-        auto modPow = [](long long base, long long exp, int mod) -> long long {
-            long long result = 1;
-            while (exp > 0) {
-                if (exp % 2 == 1) {
-                    result = (result * base) % mod;
-                }
-                base = (base * base) % mod;
-                exp /= 2;
-            }
-            return result;
-        };
-
-        // Calculate 5^even % mod and 4^odd % mod
-        long long result = modPow(5, even, mod) * modPow(4, odd, mod) % mod;
-
-        return static_cast<int>(result);
+        long long e = (n + 1) / 2;   // even indices
+        long long o = n / 2;         // odd  indices
+        return int((modPow(5, e) * modPow(4, o)) % MOD);
     }
 };
-    // 
