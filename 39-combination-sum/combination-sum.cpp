@@ -1,30 +1,28 @@
 class Solution {
 public:
-void func(vector<vector<int>>&res,vector<int>ans,int target,int i,vector<int>candidates,int sum)
+void func(vector<vector<int>>&ans,vector<int>&res,vector<int>&candidates,int i,int target)
 {
     int n=candidates.size();
     if(i==n)
     {
-        if(sum==target)
+        if(target==0)
         {
-            res.push_back(ans);
+            ans.push_back(res);
         }
         return;
     }
-    if(sum+candidates[i]<=target)
+    if(target-candidates[i]>=0)
     {
-        sum+=candidates[i];
-        ans.push_back(candidates[i]);
-        func(res,ans,target,i,candidates,sum);
-        ans.pop_back();
-        sum-=candidates[i];
+        res.push_back(candidates[i]);
+        func(ans,res,candidates,i,target-candidates[i]);
+        res.pop_back();
     }
-    func(res,ans,target,i+1,candidates,sum);
+    func(ans,res,candidates,i+1,target);
 }
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<vector<int>>res;
-        vector<int>ans;
-        func(res,ans,target,0,candidates,0);
-        return res;
+        vector<vector<int>>ans;
+        vector<int>res;
+        func(ans,res,candidates,0,target);
+        return  ans;
     }
 };
