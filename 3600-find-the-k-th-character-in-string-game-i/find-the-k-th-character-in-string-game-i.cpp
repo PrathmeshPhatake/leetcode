@@ -10,6 +10,7 @@ public:
                 char ch=(str[i]-'a'+1)%26+'a';
                 str.push_back(ch);
             }
+
         }
         return str[k-1];
     }
