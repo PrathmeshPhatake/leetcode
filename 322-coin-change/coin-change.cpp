@@ -1,32 +1,32 @@
 class Solution {
 public:
-int func(int i,vector<int>& coins,int amount,vector<vector<int>>&dp)
-{
-    if(amount==0 )
-    {
-        return 0;
-    }
-    if(i<0)
-    {
-        return INT_MAX-1;
-    }
-    if(dp[i][amount]!=-1) return dp[i][amount];
-    int take=INT_MAX;
-    if(coins[i]<=amount)
-    {
-        int sub=func(i,coins,amount-coins[i],dp);
-        if(sub!=INT_MAX-1)
-        {
-            take=1+sub;
-        }
-    }
-    int non_take=func(i-1,coins,amount,dp);
-    return dp[i][amount]=min(take,non_take);
-}
     int coinChange(vector<int>& coins, int amount) {
         int n=coins.size();
-        vector<vector<int>>dp(n,vector<int>(amount+1,-1));
-        int value=func(n-1,coins,amount,dp);
-        return value==INT_MAX-1?-1:value;
+        vector<vector<int>>dp(n,vector<int>(amount+1,0));
+        for(int i=0;i<=amount;i++)
+        {
+            if(i%coins[0]==0)
+            {
+                dp[0][i]=i/coins[0];
+            }else
+            {
+                dp[0][i]=INT_MAX;
+            }
+        }
+        for(int i=1;i<n;i++)
+        {
+            for(int j=0;j<=amount;j++)
+            {
+                int ntake=0+dp[i-1][j];
+                int take=INT_MAX;
+                if(coins[i]<=j && dp[i][j-coins[i]]!=INT_MAX)
+                {
+                    take=1+dp[i][j-coins[i]];
+                }
+                dp[i][j]=min(take,ntake);
+            }
+        }
+        return dp[n-1][amount]==INT_MAX?-1:dp[n-1][amount];
+
     }
 };
