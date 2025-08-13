@@ -1,18 +1,13 @@
 class Solution {
 public:
     bool isPowerOfThree(int n) {
-        int i=0;
-        while(i<n)
+        if(n<=0) return false;
+        while(n>1)
         {
-            if(pow(3,i)==n){
-                return true;
-            }
-            else if(pow(3,i)>n)
-            {
-                return false;
-            }
-            i++;
+            if(n%3!=0) return false;
+            n=static_cast<int>(round(n/3.0));
+
         }
-        return false;
+        return  true;
     }
 };
