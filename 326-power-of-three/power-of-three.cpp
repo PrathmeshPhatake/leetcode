@@ -6,7 +6,6 @@ public:
         {
             if(n%3!=0) return false;
             n=static_cast<int>(round(n/3.0));
-
         }
         return  true;
     }
