@@ -1,22 +1,15 @@
 class Solution {
 public:
     bool rotateString(string s, string goal) {
-        if(s.size()!=goal.size())return false;
         int n=s.size();
-        int k=0;
-        while(k<=n)
+        for(int i=0;i<n;i++)
         {
-            string str=s;
-            for(int i=0;i<n;i++)
+            string temp="";
+            for(int j=0;j<n;j++)
             {
-                str[(i+k)%n]=s[i];
+                temp+=s[(j+i+n)%n];
             }
-            if(str==goal)
-            {
-                return true;
-            
-            }
-            k++;   
+            if(temp==goal) return true;
         }
         return false;
     }
