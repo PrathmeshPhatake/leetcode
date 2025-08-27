@@ -10,29 +10,23 @@
  */
 class Solution {
 public:
-    ListNode*reversecopy(ListNode* head)
-    {
-        ListNode* revhead=NULL;
-        while(head)
+    bool isPalindrome(ListNode* head) {
+        vector<ListNode*>temp;
+        while(head!=NULL)
         {
-            ListNode*newNode=new ListNode(head->val);
-            newNode->next=revhead;
-            revhead=newNode;
+            temp.push_back(head);
             head=head->next;
         }
-        return revhead;
-    }
-    bool isPalindrome(ListNode* head) {
-        if(!head  ||!head->next) return true;
-        ListNode*reverse=reversecopy(head);
-        while(reverse && head && reverse->next!=NULL && head->next!=NULL )
+        int i=0;
+        int j=temp.size()-1;
+        while(i<=j)
         {
-            if(head->val!=reverse->val)
+            if(temp[i]->val!=temp[j]->val)
             {
                 return false;
             }
-            head=head->next;
-            reverse=reverse->next;
+            i++;
+            j--;
         }
         return true;
     }
