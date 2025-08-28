@@ -9,41 +9,25 @@
  * };
  */
 class Solution {
-struct compareListNode{
-    bool operator()(ListNode* const&a,ListNode* const&b)
-    {
-        return a->val >b->val;
-    }
-};
 public:
     ListNode* sortList(ListNode* head) {
-        if(head==NULL)
+        if(head==NULL || head->next==NULL) return head;
+        priority_queue<int,vector<int>,greater<int>>pq;
+        while(head!=NULL)
         {
-            return NULL;
+            pq.push(head->val);
+            head=head->next;
         }
-        if(head->next==NULL)
-        {
-            return  head;
-        }
-        priority_queue<ListNode*,vector<ListNode*>,compareListNode>pq;
-        ListNode*temp=head;
-        while(temp!=NULL)
-        {
-            pq.push(temp);
-            temp=temp->next;
-        }
-        head=pq.top();
-        ListNode*temp1=head;
+        ListNode*sorthead=new ListNode(pq.top());
         pq.pop();
+        ListNode*sortpoint=sorthead;
         while(!pq.empty())
         {
-            ListNode*insert=pq.top();
+            ListNode*temp=new ListNode(pq.top());
             pq.pop();
-            temp1->next=insert;
-            temp1=insert;
+            sortpoint->next=temp;
+            sortpoint=sortpoint->next;
         }
-        temp1->next=NULL;
-        return head;
-        
+        return sorthead;
     }
 };
