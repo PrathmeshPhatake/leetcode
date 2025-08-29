@@ -10,52 +10,34 @@
  */
 class Solution {
 public:
-ListNode*Kthnode(ListNode* temp,int k)
-{
-    k-=1;
-    while(temp && k>0)
-    {
-        k--;
-        temp=temp->next;
-    }
-    return temp;
-}
-ListNode* reverse(ListNode* head)
-{
-    ListNode*curr=head;
-    ListNode*prev=NULL;
-    while(curr!=NULL)
-    {
-        ListNode* nextnode=curr->next;
-        curr->next=prev;
-        prev=curr;
-        curr=nextnode;
-    }
-    return prev;
-} 
     ListNode* reverseKGroup(ListNode* head, int k) {
-        if(!head || k==1)
-        return head;
-        ListNode*dummy=new ListNode(0);
-        dummy->next=head;
-        dummy->next = head;
-        ListNode* temp = head;
-        ListNode* prelast = dummy;
-        while(temp)
-        {
-            ListNode* kthnode=Kthnode(temp,k);
-            if(kthnode==NULL) break;
-            ListNode* nextnode=kthnode->next;
-           kthnode->next=NULL;
-
-           ListNode* reversehead=reverse(temp);
-           prelast->next = reversehead;
-           
-           prelast=temp;
-           temp=nextnode;
-           prelast->next = temp;
-           
+        vector<vector<int>>dp;
+        while(head){
+            vector<int>temp;
+            for(int i=0;i<k && head;i++)
+            {
+                temp.push_back(head->val);
+                head=head->next;
+            }
+            // sort(temp.begin(),temp.end());
+            // reverse(temp.begin(),temp.end());
+            dp.push_back(temp);
         }
-        return dummy->next;
+         ListNode*ans=new ListNode(NULL);
+          ListNode*anspoint=ans;
+        for(auto it:dp)
+        {
+            if(it.size()==k)
+            {
+            // sort(it.begin(),it.end());
+            reverse(it.begin(),it.end());
+            }
+            for(auto x:it){
+                ListNode*temp=new ListNode(x);
+                anspoint->next=temp;
+                anspoint=anspoint->next;
+            }
+        }
+        return ans->next;
     }
 };
