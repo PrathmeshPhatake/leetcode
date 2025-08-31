@@ -1,50 +1,28 @@
 class Solution {
 public:
-void merge(vector<int>&nums,int low,int mid,int high)
-{
-    vector<int>ans;
-    int left=low;
-    int right=mid+1;
-    while(left<=mid && right<=high)
-    {
-        if(nums[left]<=nums[right])
-        {
-            ans.push_back(nums[left]);
-            left++;
-        }
-        else
-        {
-            ans.push_back(nums[right]);
-            right++;
-        }
-    }
-    while(left<=mid)
-    {
-         ans.push_back(nums[left]);
-         left++;
-    }
-        while(right<=high)
-    {
-         ans.push_back(nums[right]);
-         right++;
-    }
-    for(int i=low;i<=high;i++)
-    {
-        nums[i]=ans[i-low];
-    }
-
-}
-void mergesort(vector<int>&nums,int left,int  right)
-{
-    if(left>=right) return;
-    int mid=(left+right)/2;
-    mergesort(nums,left,mid);
-    mergesort(nums,mid+1,right);
-    merge(nums,left,mid,right);
-}
     void sortColors(vector<int>& nums) {
+        unordered_map<int,int>mp;
+        vector<int>ans;
         int n=nums.size();
-        mergesort(nums,0,n-1);
+        for(int i=0;i<n;i++)
+        {
+            mp[nums[i]]++;
+        }
+        vector<pair<int,int>>sorted(mp.begin(),mp.end());
+        sort(sorted.begin(),sorted.end(),[](auto &a,auto &b){
+            if(a.second==b.second)
+            {
+                return a.first<b.first;
+            }
+            return a.first<b.first;
+        });
+        nums.clear();
+        for(auto it:sorted){
+            for(int i=0;i<it.second;i++)
+            {
+                nums.push_back(it.first);
+            }
+        }
         
     }
 };
