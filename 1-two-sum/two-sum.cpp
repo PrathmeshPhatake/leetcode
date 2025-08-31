@@ -5,15 +5,24 @@ public:
         unordered_map<int,int>mp;
         for(int i=0;i<n;i++)
         {
-            if(mp.find(target-nums[i])!=mp.end())
-            {
-                return {i,mp[target-nums[i]]};
-            }
-            else
-            {
-                mp[nums[i]]=i;
+            mp[i]=nums[i];
+        }
+        set<int>ans;
+        vector<int>ans1;
+        for(int i=0;i<n;i++){
+            int diff=target-nums[i];
+            for(auto it:mp){
+                if(it.second==diff && it.first!=i){
+                    ans.insert(i);
+                    ans.insert(it.first);
+                    break;
+                }
             }
         }
-        return {-1,-1};
+        for(auto it:ans)
+        {
+            ans1.push_back(it);
+        }
+        return ans1;
     }
 };
