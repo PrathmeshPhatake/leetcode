@@ -1,26 +1,27 @@
 class Solution {
 public:
     void setZeroes(vector<vector<int>>& matrix) {
-        bool zeroinFirstCol = false;
-        for (int row = 0; row < matrix.size(); row++) {
-            if (matrix[row][0] == 0) zeroinFirstCol = true;
-            for (int col = 1; col < matrix[0].size(); col++) {
-                if (matrix[row][col] == 0) {
-                    matrix[row][0] = 0;
-                    matrix[0][col] = 0;
+        vector<vector<int>>ans=matrix;
+        int r=matrix.size();
+        int c=matrix[0].size();
+        for(int i=0;i<r;i++)
+        {
+            for(int j=0;j<c;j++)
+            {
+                if(matrix[i][j]==0)
+                {
+                    // made coloumn zero
+                    for(int x=0;x<c;x++)
+                    {
+                        ans[i][x]=0;
+                    }
+                    for(int y=0;y<r;y++)
+                    {
+                        ans[y][j]=0;
+                }
                 }
             }
         }
-
-        for (int row = matrix.size() - 1; row >= 0; row--) {
-            for (int col = matrix[0].size() - 1; col >= 1; col--) {
-                if (matrix[row][0] == 0 || matrix[0][col] == 0) {
-                    matrix[row][col] = 0;
-                }
-            }
-            if (zeroinFirstCol) {
-                matrix[row][0] = 0;
-            }
-        }
+         matrix=ans;
     }
 };
