@@ -1,28 +1,25 @@
 class Solution {
 public:
     int beautySum(string s) {
-        int n=s.size();
-        int sum=0;
-        for(int i=0;i<n;i++)
-        {
-           unordered_map<char,int>mp;
-            int maxi=INT_MIN;
-            int mini=INT_MAX;
-            for(int j=i;j<n;j++)
-            {
-                mp[s[j]]++;
-                maxi=max(maxi,mp[s[j]]);
-                mini=INT_MAX;
+        int n = s.length();
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+           vector<int>mp(26,0);
+            for (int j = i; j < n; j++) {
+            int maxfreq = 0;
+            int minfreq = INT_MAX;
+                mp[s[j]-'a']++;
                 for(auto it:mp)
                 {
-                    if(it.second>0)
+                    if(it>0)
                     {
-                        mini=min(mini,it.second);
+                        maxfreq=max(maxfreq,it);
+                        minfreq=min(minfreq,it);
                     }
                 }
-                sum+=(maxi-mini);
+                ans += abs(maxfreq - minfreq);
             }
         }
-        return sum;
+        return ans;
     }
 };
