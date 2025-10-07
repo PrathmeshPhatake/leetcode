@@ -1,53 +1,39 @@
 class Solution {
 public:
-int func(vector<int>&nums,int limit,int k)
+bool func(vector<int>&nums,int limit,int k)
 {
-    int n=nums.size();
-    int prev=0;
-    int count=1;
-    for(int i=0;i<n;i++)
+    int sum=0;
+    long long count=1;
+    for(int i=0;i<nums.size();i++)
     {
-        if(prev+nums[i]>limit)
-        {
-            count++;
-            prev=nums[i];
-        }else
-        {
-            prev+=nums[i];
-        }
-        
-    }
-    return count;
-}
-    int splitArray(vector<int>& nums, int k) {
-        int n=nums.size();
-        int maxi=*max_element(nums.begin(),nums.end());
-        int sum=0;
-        for(int i=0;i<n;i++)
+        if(sum+nums[i]<=limit)
         {
             sum+=nums[i];
-        }
-        // for(int i=maxi;i<=sum;i++)
-        // {
-        //     if(func(nums,i,k)==true)
-        //     {
-        //         return i;
-        //     }
-        // }
-        int left=maxi;
-        int right=sum;
-        while(left<=right)
+        }else
         {
-            int mid=(left+right)/2;
-            int partion=func(nums,mid,k);
-            if(partion>k)
+            count++;
+            sum=nums[i];
+            if(count>k) return false;
+        }
+    }
+    return true;
+}
+    int splitArray(vector<int>& nums, int k) {
+        int low=*max_element(nums.begin(),nums.end());
+        int high=accumulate(nums.begin(),nums.end(),0);
+        int ans=0;
+        while(low<=high)
+        {
+            int mid=(low+high)/2;
+            if(func(nums,mid,k))
             {
-                left=mid+1;
+                ans=mid;
+                high=mid-1;  // try lower limit
             }else
             {
-                right=mid-1;
+                low=mid+1; // try higher limit 
             }
         }
-        return left;
+    return ans;
     }
 };
