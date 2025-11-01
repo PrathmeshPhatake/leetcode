@@ -1,39 +1,42 @@
 class Solution {
 public:
-bool func(vector<int>&nums,int limit,int k)
+bool func(vector<int>&nums,int k,int limit)
 {
+    int count=0;
     int sum=0;
-    long long count=1;
-    for(int i=0;i<nums.size();i++)
+    for(auto it:nums)
     {
-        if(sum+nums[i]<=limit)
+        if(sum+it<=limit)
         {
-            sum+=nums[i];
+            sum+=it;
         }else
         {
             count++;
-            sum=nums[i];
-            if(count>k) return false;
+            sum=it;
         }
     }
-    return true;
+    if(sum!=0)count++;
+    return count<=k;
 }
     int splitArray(vector<int>& nums, int k) {
-        int low=*max_element(nums.begin(),nums.end());
-        int high=accumulate(nums.begin(),nums.end(),0);
+        int mini=*max_element(nums.begin(),nums.end());
+        int maxi=0;
         int ans=0;
-        while(low<=high)
+        for(auto it:nums)
         {
-            int mid=(low+high)/2;
-            if(func(nums,mid,k))
+            maxi+=it;
+        }
+        while(mini<=maxi){
+            int mid=(maxi+mini)/2;
+            if(func(nums,k,mid))
             {
                 ans=mid;
-                high=mid-1;  // try lower limit
+                maxi=mid-1;
             }else
             {
-                low=mid+1; // try higher limit 
+                mini=mid+1;
             }
         }
-    return ans;
+        return ans;
     }
 };
