@@ -1,41 +1,39 @@
 class Solution {
 public:
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
-        // we want reverse graph for that 
-        int numCourses=graph.size();
         int n=graph.size();
-       
-        vector<vector<int>>revgraph(n);
-        vector<int> indegree(n, 0);
-        for(int u=0;u<n;u++)
+        vector<vector<int>>adj(n);
+        vector<int>indegre(n,0);
+        for(int i=0;i<n;i++)
         {
-            for(auto v:graph[u])
+            for(auto it:graph[i])
             {
-                revgraph[v].push_back(u);
-                indegree[u]++; 
+                adj[it].push_back(i);
+                indegre[i]++;
             }
         }
-        queue<int> q;
-        for (int i = 0; i < numCourses; i++) {
-            if(indegree[i]==0)
+        queue<int>q;
+        for(int i=0;i<n;i++)
+        {
+            if(indegre[i]==0)
             {
-            q.push(i);
+                q.push(i);
             }
         }
-        vector<int>ans;
-        while (!q.empty()) {
+        vector<int>topo;
+        while(!q.empty())
+        {
             int node=q.front();
             q.pop();
-            ans.push_back(node);
-            for(auto it:revgraph[node])
+            topo.push_back(node);
+            for(auto it:adj[node])
             {
-                indegree[it]--;
-                if(indegree[it]==0){
-                    q.push(it);
-                }
+                indegre[it]--;
+                if(indegre[it]==0)q.push(it);
             }
         }
-        sort(ans.begin(),ans.end());
-        return ans;
+        sort(topo.begin(),topo.end());
+        return topo;
+
     }
 };
