@@ -1,40 +1,32 @@
 class Solution {
 public:
     string longestPalindrome(string s) {
-        int n=s.size();
+        int n=s.length();
         vector<vector<bool>>dp(n,vector<bool>(n,false));
-        int maxlen=1;
-        int start=0;
-        // same char of len 1 is palidrome
-        for(int i=0;i<n;i++)
+        string ans="";
+        for(int len=1;len<=n;len++)
         {
-            dp[i][i]=true;
-        }
-        // len 2 for direct handling
-        for(int i=0;i<n-1;i++)
-        {
-            if(s[i]==s[i+1])
-            {
-                dp[i][i+1]=true;
-                start=i;
-                maxlen=2;
-            }
-        }
-        for(int len =3;len<=n;len++){
-            for(int i=0;i<=(n-len);i++)
-            {
+            for(int i=0;i+len-1<n;i++){
                 int j=i+len-1;
-                if(s[i]==s[j] && dp[i+1][j-1])
+                // if len is 1 then 
+                if(len==1) 
                 {
                     dp[i][j]=true;
-                    if(maxlen<len)
-                    {
-                        maxlen=len;
-                        start=i;
-                    }
+                }else if(len==2)
+                {
+                    //  if 2 then check it same or not 
+                    dp[i][j]=(s[i]==s[j]);
+                }else
+                {
+                    // if first and last is same then we can check middle one is same 
+                    dp[i][j]=(s[i]==s[j] && dp[i+1][j-1]);
+                }
+                if(dp[i][j] && len>ans.size())
+                {
+                    ans=s.substr(i,len);
                 }
             }
         }
-        return s.substr(start,maxlen);
+        return ans;
     }
 };
