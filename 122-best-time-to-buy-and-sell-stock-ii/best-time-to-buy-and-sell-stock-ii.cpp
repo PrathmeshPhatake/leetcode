@@ -1,28 +1,23 @@
 class Solution {
 public:
-int func(vector<vector<int>>&dp,int i,vector<int>&prices,int buy,int profit)
-{
-    int n=prices.size();
-    if(i==n)
-    {
-        return 0;
-    }
-    if(dp[i][buy]!=-1) return dp[i][buy];
-    if(buy)
-    {
-        dp[i][buy]=max(-prices[i]+func(dp,i+1,prices,0,profit),0+func(dp,i+1,prices,1,profit));
-    }else
-    {
-        dp[i][buy]=max(prices[i]+func(dp,i+1,prices,1,profit),0+func(dp,i+1,prices,0,profit));
-
-    }
-    return dp[i][buy];
-
-}
     int maxProfit(vector<int>& prices) {
-        int profit=0;
         int n=prices.size();
-        vector<vector<int>>dp(n,vector<int>(2,-1));
-        return func(dp,0,prices,1,profit);
+        vector<vector<int>>dp(n+1,vector<int>(2,0));
+        dp[0][1]=INT_MIN;
+        dp[0][0]=0;
+        for(int i=1;i<=n;i++)
+        {
+            for(int b=0;b<=1;b++)
+            {
+                if(b)
+                {
+                    dp[i][b]=max(dp[i-1][1],-prices[i-1]+dp[i-1][0]);
+                }else
+                {
+                    dp[i][b]=max(dp[i-1][0],prices[i-1]+dp[i-1][1]);
+                }
+            }
+        }
+        return dp[n][0];
     }
 };
