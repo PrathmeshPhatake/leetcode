@@ -11,24 +11,18 @@
  */
 class Solution {
 public:
-int height(TreeNode*root)
+int dfsheight(TreeNode*root)
 {
+    // we follow post order traverasal for this left->right->root
     if(root==NULL) return 0;
-    
-    int lh=height(root->left);
-    int rh=height(root->right);
+    int lh=dfsheight(root->left);
+    if(lh==-1)return -1;
+    int rh=dfsheight(root->right);
+    if(rh==-1)return -1;
+    if(abs(lh-rh)>1) return -1;
     return 1+max(lh,rh);
 }
-
     bool isBalanced(TreeNode* root) {
-        if(root==NULL) return true;
-        
-        int lh=height(root->left);
-        int rh=height(root->right);
-        if(abs(lh-rh)<=1 && isBalanced(root->right) && isBalanced(root->left))
-        {
-            return true;
-        }
-        return false;
+        return dfsheight(root)!=-1;
     }
 };
