@@ -1,35 +1,44 @@
 class Solution {
 public:
     int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
-        int m=grid.size();
-        int n=grid[0].size();
-        if(grid[0][0]==1 || grid[m-1][n-1]==1) return -1;
-        priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>>pq;
-        pq.push({1,{0,0}});
-        grid[0][0]=1;
-        while(!pq.empty())
+        int n=grid.size();
+        int m=grid[0].size();
+        vector<vector<int>>visited(n,vector<int>(m,0));
+        if(grid[0][0]!=0)
         {
-           auto [step,rc]=pq.top();
-           int r=rc.first;
-           int c=rc.second;
-           pq.pop();
-           if(r==m-1 && c==n-1)
-           {
-             return step;
-           }
-           int row[]={0,1,1,1,0,-1,-1,-1};
-           int col[]={1,1,0,-1,-1,-1,0,1};
-           for(int i=0;i<8;i++)
-           {
-              int nr=r+row[i];
-              int nc=c+col[i];
-              if(nr>=0 && nr<m && nc>=0 && nc<n && grid[nr][nc]==0)
-              {
-                pq.push({step+1,{nr,nc}});
-                grid[nr][nc]=1;
-              }
-           }
+            return -1;
         }
-        return -1;
+        if(grid[n-1][m-1]!=0)
+        {
+            return -1;
+        }
+        visited[0][0]=1;
+        int mini=INT_MAX;
+        queue<pair<int,pair<int,int>>>q;
+        q.push({1,{0,0}});
+        int row[]={-1,-1,0,1,1,1,0,-1};
+        int col[]={0,1,1,1,0,-1,-1,-1};
+        while(!q.empty())
+        {
+            auto it=q.front();
+            int dist=it.first;
+            int r=it.second.first;
+            int c=it.second.second;
+            q.pop();
+            if(r==n-1 && c==m-1){
+                mini=min(mini,dist);
+            }
+            for(int i=0;i<8;i++)
+            {
+                int nr=r+row[i];
+                int nc=c+col[i];
+                if(nr>=0 && nr<n && nc>=0 && nc<m && !visited[nr][nc] && grid[nr][nc]==0)
+                {
+                    q.push({dist+1,{nr,nc}});
+                    visited[nr][nc]=1;
+                }
+            }
+        }
+        return mini==INT_MAX?-1:mini;
     }
 };
