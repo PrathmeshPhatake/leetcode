@@ -4,30 +4,27 @@ public:
         int l=0;
         int r=0;
         int n=nums.size();
-        int maxlen=0;
-        int zero=0;
+        int maxi=0;
         while(r<n)
         {
             if(nums[r]==0)
             {
-                zero++;
+                k--;
             }
-            if(zero<=k)
+            if(k>=0)
             {
-                maxlen=max(maxlen,r-l+1);
-            }else
+                maxi=max(maxi,r-l+1);
+            }
+            if(k<0 && l<=r)
             {
-                while(zero>k && l<r)
+                if(nums[l]==0)
                 {
-                    if(nums[l]==0)
-                    {
-                        zero--;
-                    }
-                    l++;
+                    k++;
                 }
+                l++;
             }
             r++;
         }
-        return maxlen;
+        return maxi;
     }
 };
