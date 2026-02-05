@@ -1,22 +1,27 @@
 class Solution {
 public:
-    int func(vector<int>& nums, int k) {
-        if(k==0) return 0;
-        int left = 0;
-        int maxi = 0;
+int func(vector<int>& nums, int k)
+{
+        int count=0;
+        int l=0;
+        unordered_map<int,int>mp;
         int n=nums.size();
-        unordered_map<int, int> mp;
-        for (int right = 0; right < n; right++) {
-            mp[nums[right]]++;
-            while (mp.size() > k && left<right) {
-                mp[nums[left]]--;
-                if(mp[nums[left]]==0) mp.erase(nums[left]);
-                left++;
+        for(int r=0;r<n;r++)
+        {
+            mp[nums[r]]++;
+            while(mp.size()>k && l<=r){
+                mp[nums[l]]--;
+                if(mp[nums[l]]==0)
+                {
+                    mp.erase(nums[l]);
+                }
+                l++;
             }
-            maxi +=(right - left + 1);
+            count+=r-l+1;
+            
         }
-        return maxi;
-    }
+        return count;
+}
     int subarraysWithKDistinct(vector<int>& nums, int k) {
         return func(nums,k)-func(nums,k-1);
     }
