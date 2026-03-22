@@ -1,27 +1,26 @@
 class Solution {
 public:
-void func(vector<vector<int>>&ans,vector<int>&res,int i,int count,int sum,int n,int k)
+void func(vector<vector<int>>&ans,vector<int>temp,int i,int k,int n)
 {
-    if(sum==n && count==k)
+    if(i>9)
     {
-        ans.push_back(res);
+        if(n==0 && k==0)
+        {
+            ans.push_back(temp);
+        }
         return;
     }
-    if(sum>n || count>k ||i>9)
-    {
-        return ;
+    if(i<=n){
+        temp.push_back(i);
+        func(ans,temp,i+1,k-1,n-i);
+        temp.pop_back();
     }
-    res.push_back(i);
-    func(ans,res,i+1,count+1,sum+i,n,k);
-    res.pop_back();
-    func(ans,res,i+1,count,sum,n,k);
+    func(ans,temp,i+1,k,n);
 }
     vector<vector<int>> combinationSum3(int k, int n) {
         vector<vector<int>>ans;
-        vector<int>res;
-        func(ans,res,1,0,0,n,k);
+        vector<int>temp;
+        func(ans,temp,1,k,n);
         return ans;
-
-        
     }
 };
