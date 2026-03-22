@@ -1,39 +1,26 @@
 class Solution {
 public:
-    bool dfs(vector<vector<int>>& visited, vector<vector<char>>& board,
-             string word, int r, int c, int index) {
-        int n = board.size();
-        int m = board[0].size();
-        if (word.size() == index+1) {
-            return true;
+    bool func(vector<vector<char>>& board, string word, int index,int r,int c) {
+        if(index==word.size()) return true;
+        if(r<0 || c<0 || r>=board.size() || c>=board[0].size() || board[r][c]!=word[index])
+        {
+            return  false;
         }
-
-        visited[r][c] = 1;
-        int drow[] = {-1, 0, 1, 0};
-        int dcol[] = {0, 1, 0, -1};
-        for (int i = 0; i < 4; i++) {
-            int nrow = r + drow[i];
-            int ncol = c + dcol[i];
-            if (nrow >= 0 && nrow < n && ncol >= 0 && ncol < m &&
-                board[nrow][ncol] == word[index + 1] &&
-                visited[nrow][ncol] != 1) {
-                if (dfs(visited, board, word, nrow, ncol, index + 1))
-                    return true;
-            }
-        }
-        visited[r][c] = 0;
-        return false;
+        char temp=board[r][c];
+        board[r][c]='#';
+        bool found=func(board,word,index+1,r+1,c)|| func(board,word,index+1,r,c+1)||func(board,word,index+1,r-1,c)||func(board,word,index+1,r,c-1);
+        board[r][c]=temp;
+        return found;
     }
     bool exist(vector<vector<char>>& board, string word) {
         int n = board.size();
         int m = board[0].size();
-
-        vector<vector<int>> visited(n, vector<int>(m, 0));
+        queue<pair<int, pair<int, int>>> q;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (word[0] == board[i][j])
-                {
-                    if (dfs(visited, board, word, i, j, 0)) {
+                if (board[i][j] == word[0]) {
+                    if(func(board,word,0,i,j))
+                    {
                         return true;
                     }
                 }
