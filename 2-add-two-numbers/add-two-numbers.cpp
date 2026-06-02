@@ -11,50 +11,40 @@
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        ListNode*ptra=l1;
-        ListNode*ptrb=l2;
-        ListNode*reshead=new ListNode(-1);
-        ListNode*restail=reshead;
-        int digit=0;
-        while(ptra!=NULL && ptrb!=NULL)
-        {
-            int value=(ptra->val+ptrb->val)+digit;
-            int unit=value%10;
-            digit=value/10;
-            ListNode*newnode=new ListNode(unit);
-            restail->next=newnode;
-            restail=newnode;
-            ptra=ptra->next;
-            ptrb=ptrb->next;
-            
+        int carry = 0;
+        ListNode* curr = new ListNode(0);
+        ListNode* temphead = curr;
+        while (l1 != NULL && l2 != NULL) {
+            int rem = (l1->val + l2->val + carry) % 10;
+            carry = (l1->val + l2->val + carry) / 10;
+            ListNode* temp = new ListNode(rem);
+            curr->next = temp;
+            curr = temp;
+            l1 = l1->next;
+            l2 = l2->next;
         }
-        while(ptra!=NULL )
-        {
-            int value=(ptra->val)+digit;
-            int unit=value%10;
-            digit=value/10;
-            ListNode*newnode=new ListNode(unit);
-            restail->next=newnode;
-            restail=newnode;
-            ptra=ptra->next;            
+        while (l1 != NULL ) {
+            int rem = (l1->val + carry) % 10;
+            carry = (l1->val + carry) / 10;
+            ListNode* temp = new ListNode(rem);
+            curr->next = temp;
+            curr = temp;
+            l1 = l1->next;
         }
-        while(ptrb!=NULL)
-        {
-            int value=(ptrb->val)+digit;
-            int unit=value%10;
-            digit=value/10;
-            ListNode*newnode=new ListNode(unit);
-            restail->next=newnode;
-            restail=newnode;
-            ptrb=ptrb->next;
-            
+        while ( l2 != NULL) {
+            int rem = (l2->val + carry) % 10;
+            carry = (l2->val + carry) / 10;
+            ListNode* temp = new ListNode(rem);
+            curr->next = temp;
+            curr = temp;
+            l2 = l2->next;
         }
-        if(digit>0)
+        if(carry>0)
         {
-            ListNode*newnode=new ListNode(digit);
-            restail->next=newnode;
-            restail=newnode;
+            ListNode* temp = new ListNode(carry);
+            curr->next=temp;
+            curr=temp;
         }
-        return reshead->next;
+        return temphead->next;
     }
 };
