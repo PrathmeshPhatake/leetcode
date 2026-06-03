@@ -1,27 +1,27 @@
 class Solution {
 public:
     vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
-        int m=nums1.size();
-        int n=nums2.size();
         vector<int>ans;
-        for(int i=0;i<m;i++)
+        for(auto it:nums1)
         {
-            int index=find(nums2.begin(),nums2.end(),nums1[i])-nums2.begin();
-            int flag=false;
-            for(int j=index;j<n;j++)
+            bool find=false;
+            bool greaterfind=false;
+            for(int i=0;i<nums2.size();i++)
             {
-                if(nums2[j]>nums2[index])
+                if(it==nums2[i])
                 {
-                    ans.push_back(nums2[j]);
-                    flag=true;
+                    find=true;
+                }
+                if(find && nums2[i]>it){
+                    ans.push_back(nums2[i]);
+                    greaterfind=true;
                     break;
                 }
             }
-            if(!flag)
-            {
-                ans.push_back(-1);
-            }
-            
+                if(!greaterfind)
+                {
+                    ans.push_back(-1);
+                }
         }
         return ans;
     }
