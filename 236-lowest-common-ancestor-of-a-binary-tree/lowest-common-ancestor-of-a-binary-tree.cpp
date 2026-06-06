@@ -22,8 +22,7 @@ public:
         }else if(right==NULL)
         {
             return left;
-        }
-        else
+        }else
         {
             return root;
         }
