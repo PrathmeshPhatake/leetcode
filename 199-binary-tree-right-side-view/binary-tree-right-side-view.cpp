@@ -11,23 +11,23 @@
  */
 class Solution {
 public:
-void func(TreeNode*root,int l,map<int,int>&mp)
+void func(map<int,vector<pair<int,int>>>&mp,int v,int h,TreeNode*root)
 {
-    if(root==NULL)return;
-    if(mp.find(l)==mp.end())
+    if(root==NULL)
     {
-        mp[l]={root->val};
+        return;
     }
-    func(root->right,l+1,mp);
-    func(root->left,l+1,mp);
+    mp[h].push_back({v,root->val});
+    func(mp,v-1,h+1,root->right);
+    func(mp,v+1,h+1,root->left);
 }
     vector<int> rightSideView(TreeNode* root) {
-        map<int,int>mp;
+        map<int,vector<pair<int,int>>>mp;
+        func(mp,0,0,root);
         vector<int>ans;
-        func(root,0,mp);
         for(auto it:mp)
         {
-            ans.push_back(it.second);
+            ans.push_back(it.second[0].second);
         }
         return ans;
     }
